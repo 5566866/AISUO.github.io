@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISUO 产品详情 - 重新定义智能体验</title>
+    <style>
+        /* 全局重置：苹果风格极简主义 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            color: #1d1d1f; line-height: 1.6; 
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; font-family: inherit; background: transparent; }
+        .section { padding: 100px 0; }
+        .section-title { 
+            font-size: clamp(2rem, 5vw, 3rem); 
+            text-align: center; margin-bottom: 20px; 
+            font-weight: 600; color: #1d1d1f;
+            letter-spacing: -0.5px;
+        }
+        .section-subtitle { 
+            font-size: clamp(1rem, 1.8vw, 1.2rem); 
+            text-align: center; color: #6e6e73;
+            max-width: 800px; margin: 0 auto 80px;
+            line-height: 1.7;
+        }
+
+        /* 顶部导航 */
+        nav { 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e6e6e6;
+            padding: 14px 0;
+        }
+        .nav-wrap { 
+            display: flex; justify-content: space-between; 
+            align-items: center; flex-wrap: wrap; gap: 20px;
+        }
+        .logo { 
+            font-size: clamp(1.2rem, 2vw, 1.4rem); 
+            font-weight: 600; color: #1d1d1f;
+            letter-spacing: -0.2px;
+        }
+        .nav-links { 
+            display: flex; gap: clamp(20px, 3vw, 35px);
+            flex-wrap: wrap;
+        }
+        .nav-links a { 
+            color: #1d1d1f; font-weight: 400;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover { color: #0071e3; }
+        .nav-cta { 
+            padding: 8px 16px; 
+            background: #0071e3;
+            color: #ffffff; 
+            border-radius: 20px;
+            font-weight: 400;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            transition: background 0.2s ease;
+        }
+        .nav-cta:hover { background: #0077ed; }
+
+        /* 产品详情卡片：左右布局（图片+文字） */
+        .product-detail { 
+            margin-bottom: 150px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 8vw, 80px);
+            align-items: center;
+        }
+        /* 交替布局：第二张卡片左右互换 */
+        .product-detail.reverse { grid-template-columns: 1fr 1fr; }
+        .product-img { 
+            width: 100%; height: auto;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-img:hover { transform: scale(1.02); }
+        .product-info h3 { 
+            font-size: clamp(1.8rem, 3vw, 2.4rem); 
+            font-weight: 600; color: #1d1d1f;
+            margin-bottom: 25px;
+            letter-spacing: -0.3px;
+        }
+        .product-desc { 
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            color: #6e6e73;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .product-specs { 
+            margin-bottom: 40px;
+        }
+        .specs-title { 
+            font-size: clamp(1.1rem, 1.5vw, 1.2rem);
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 15px;
+        }
+        .specs-grid { 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .spec-item { 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            color: #6e6e73;
+        }
+        .spec-item::before { 
+            content: '✓';
+            color: #0071e3;
+            font-weight: 600;
+        }
+        .product-btn { 
+            padding: 12px 28px;
+            background: #0071e3;
+            color: #ffffff;
+            border-radius: 25px;
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+            font-weight: 400;
+            transition: background 0.2s ease;
+            display: inline-block;
+        }
+        .product-btn:hover { background: #0077ed; }
+
+        /* 底部 */
+        footer { 
+            padding: 60px 0;
+            background: #f2f2f2;
+            color: #6e6e73;
+            text-align: center;
+        }
+        .footer-text { 
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            line-height: 1.8;
+        }
+
+        /* 响应式适配：移动端堆叠布局 */
+        @media (max-width: 992px) {
+            .product-detail, .product-detail.reverse { 
+                grid-template-columns: 1fr;
+            }
+            .section { padding: 80px 0; }
+            .product-detail { margin-bottom: 100px; }
+            .specs-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .nav-wrap { justify-content: center; }
+            .section-title { font-size: 2rem; }
+            .product-info h3 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航：首页链接已更新为 https://5566866.github.io -->
+    <nav>
+        <div class="container nav-wrap">
+            <a href="#" class="logo">AISUO</a>
+            <div class="nav-links">
+                <a href="https://5566866.github.io" target="_blank">首页</a>
+                <a href="#products">产品</a>
+                <a href="#about">关于</a>
+                <a href="#contact">联系我们</a>
+            </div>
+            <a href="https://5566866.github.io/AISUOI.github.io/" class="nav-cta" target="_blank">咨询</a>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="section" style="margin-top: 80px;">
+        <div class="container">
+            <h2 class="section-title">产品详情</h2>
+            <p class="section-subtitle">每一款产品，都为极致体验而生。探索折叠、直屏、超薄三大系列的核心魅力</p>
+        </div>
+    </section>
+
+    <!-- 1. 二折叠旗舰详情（完整图片链接：含.png后缀） -->
+    <section class="container">
+        <div class="product-detail">
+            <div class="product-img-wrap">
+                <img src="1763202096088_edit_252161748103189.png" alt="AISUO 二折叠旗舰手机" class="product-img">
+            </div>
+            <div class="product-info">
+                <h3>二折叠旗舰</h3>
+                <p class="product-desc">内外双屏无缝协同，打破形态边界。6.8英寸内屏带来沉浸式视觉体验，4.6英寸外屏满足日常快捷操作，搭配旗舰级性能与影像系统，兼顾便携与专业。</p>
+                <div class="product-specs">
+                    <h4 class="specs-title">核心亮点</h4>
+                    <div class="specs-grid">
+                        <div class="spec-item">120Hz柔性OLED折叠屏，10bit色深</div>
+                        <div class="spec-item">骁龙8 Gen3处理器，LPDDR5X内存</div>
+                        <div class="spec-item">5000万像素超光感主摄，OIS光学防抖</div>
+                        <div class="spec-item">4500mAh双电芯电池，65W有线快充</div>
+                        <div class="spec-item">IPX8防水等级，航天级铰链设计</div>
+                        <div class="spec-item">基于Android 14的AISUO OS</div>
+                    </div>
+                </div>
+                <a href="https://5566866.github.io/AISUOI.github.io/" class="product-btn" target="_blank">了解更多</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 经典直屏详情（完整图片链接：含.png后缀，交替布局） -->
+    <section class="container">
+        <div class="product-detail reverse">
+            <div class="product-info">
+                <h3>经典直屏</h3>
+                <p class="product-desc">回归纯粹视觉体验，6.7英寸2K超清直屏搭配120Hz刷新率，原色显示精准还原真实色彩。均衡性能调校兼顾功耗与流畅度，是日常使用的理想之选。</p>
+                <div class="product-specs">
+                    <h4 class="specs-title">核心亮点</h4>
+                    <div class="specs-grid">
+                        <div class="spec-item">6.7英寸2K超清直屏，Delta E＜1</div>
+                        <div class="spec-item">骁龙8 Gen2处理器，UFS 4.0存储</div>
+                        <div class="spec-item">4800万像素光学防抖主摄，1200万超广角</div>
+                        <div class="spec-item">5000mAh超大容量电池，45W有线快充</div>
+                        <div class="spec-item">立体声双扬声器，X轴线性马达</div>
+                        <div class="spec-item">侧边指纹解锁，IP68防水等级</div>
+                    </div>
+                </div>
+                <a href="https://5566866.github.io/AISUOI.github.io/" class="product-btn" target="_blank">了解更多</a>
+            </div>
+            <div class="product-img-wrap">
+                <img src="1763202150360_edit_252154092937565.png" alt="AISUO 经典直屏手机" class="product-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 超薄轻量详情（完整图片链接：含.png后缀） -->
+    <section class="container">
+        <div class="product-detail">
+            <div class="product-img-wrap">
+                <img src="1763202449159_edit_252280190290150.png" alt="AISUO 超薄轻量手机" class="product-img">
+            </div>
+            <div class="product-info">
+                <h3>超薄轻量</h3>
+                <p class="product-desc">7.1mm极致纤薄机身，160g轻量化设计，单手掌控毫无压力。在轻薄形态下，依然保留均衡配置与持久续航，颜值与实用性完美平衡。</p>
+                <div class="product-specs">
+                    <h4 class="specs-title">核心亮点</h4>
+                    <div class="specs-grid">
+                        <div class="spec-item">6.5英寸OLED柔性直屏，90Hz刷新率</div>
+                        <div class="spec-item">骁龙7 Gen3处理器，低功耗调校</div>
+                        <div class="spec-item">4800万像素高清主摄，AI影像算法</div>
+                        <div class="spec-item">4000mAh高密度电池，30W无线快充</div>
+                        <div class="spec-item">7.1mm机身厚度，160g超轻重量</div>
+                        <div class="spec-item">玻璃背板，金属中框，IP53防尘防水</div>
+                    </div>
+                </div>
+                <a href="https://5566866.github.io/AISUOI.github.io/" class="product-btn" target="_blank">了解更多</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <p class="footer-text">© 2025 AISUO 电子科技 版权所有 | 专注高端智能手机研发与创新</p>
+        </div>
+    </footer>
+
+    <!-- 图片加载优化脚本 -->
+    <script>
+        // 懒加载图片，提升页面加载速度
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll("img");
+            const imgObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        imgObserver.unobserve(img);
+                    }
+                });
+            });
+            images.forEach(img => imgObserver.observe(img));
+        });
+    </script>
+</body>
+</html>
